@@ -17,13 +17,13 @@ login = get_login_details()
 session = spotify.Session(config)
 session.login(login[0], login[1])
 session.process_events()
-time.sleep(5)  # Sleep for 5 seconds because the threading method doesn't work properly :(
-
-loop = spotify.EventLoop(session)
-loop.start()
+time.sleep(15)  # Sleep for 5 seconds because the threading method doesn't work properly :(
 
 playlist = session.get_playlist('spotify:user:1154159617:playlist:64Dmb6PS1Rr4WT3XRF2imE')
 playlist.load()
+
+loop = spotify.EventLoop(session)
+loop.start()
 
 # Pick track
 track_number = random.randint(0, (len(playlist.tracks)-1))

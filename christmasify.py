@@ -3,9 +3,11 @@ import random
 import logging
 import threading
 from datetime import datetime
+import os
 
 def get_login_details():
-    file = open('.authentication', 'r')
+    __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+    file = open(os.path.join(__location__, '.authentication'), 'r')
     csv = file.read()
     details = csv.split(',')
     file.close()
@@ -27,8 +29,9 @@ def connection_state_listener(session):
 def on_end_of_track(self):
     end_of_track.set()
 
+time = int(datetime.now().strftime('%H%M%S'))
 
-if int(datetime.now().strftime('%H%M%S')) < 230500:
+if (time < 230500) and (time > 93000):
     session = spotify.Session()
     loop = spotify.EventLoop(session)
     loop.start()

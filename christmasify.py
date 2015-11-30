@@ -1,6 +1,6 @@
 import spotify
 import random
-import time
+import logging
 
 def get_login_details():
     file = open('.authentication', 'r')
@@ -10,14 +10,18 @@ def get_login_details():
     return details
 
 
-config = spotify.Config()
-config.user_agent = "Christmasify"
-login = get_login_details()
+logging.basicConfig(level=logging.DEBUG)
 
-session = spotify.Session(config)
+login = get_login_details()
+print(login[0])
+print(login[1])
+
+session = spotify.Session()
 session.login(login[0], login[1])
-session.process_events()
-time.sleep(15)  # Sleep for 5 seconds because the threading method doesn't work properly :(
+
+# Do nothing until logged in
+while session.connection.state != spotify.ConnectionState.LOGGED_IN:
+    session.process_events()
 
 playlist = session.get_playlist('spotify:user:1154159617:playlist:64Dmb6PS1Rr4WT3XRF2imE')
 playlist.load()

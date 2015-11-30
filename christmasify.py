@@ -19,6 +19,7 @@ loop = spotify.EventLoop(session)
 loop.start()
 
 session.login(login[0], login[1])
+session.process_events()
 time.sleep(5)  # Sleep for 5 seconds because the threading method doesn't work properly :(
 
 playlist = session.get_playlist('spotify:user:1154159617:playlist:64Dmb6PS1Rr4WT3XRF2imE')

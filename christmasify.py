@@ -36,7 +36,7 @@ if (time < 230500) and (time > 93000):
     config = spotify.Config()
     config.load_application_key_file(os.path.join(__location__, 'spotify_appkey.key'))
 
-    session = spotify.Session()
+    session = spotify.Session(config)
     loop = spotify.EventLoop(session)
     loop.start()
 

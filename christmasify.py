@@ -2,6 +2,7 @@ import spotify
 import random
 import logging
 import threading
+from datetime import datetime
 
 def get_login_details():
     file = open('.authentication', 'r')
@@ -27,33 +28,34 @@ def on_end_of_track(self):
     end_of_track.set()
 
 
-session = spotify.Session()
-loop = spotify.EventLoop(session)
-loop.start()
+if int(datetime.now().strftime('%H%M%S')) < 230500:
+    session = spotify.Session()
+    loop = spotify.EventLoop(session)
+    loop.start()
 
-session.on(spotify.SessionEvent.CONNECTION_STATE_UPDATED, connection_state_listener)
-session.on(spotify.SessionEvent.END_OF_TRACK, on_end_of_track)
+    session.on(spotify.SessionEvent.CONNECTION_STATE_UPDATED, connection_state_listener)
+    session.on(spotify.SessionEvent.END_OF_TRACK, on_end_of_track)
 
-session.login(login[0], login[1])
-logged_in_event.wait()
+    session.login(login[0], login[1])
+    logged_in_event.wait()
 
-audio = spotify.AlsaSink(session)
+    audio = spotify.AlsaSink(session)
 
-playlist = session.get_playlist('spotify:user:1154159617:playlist:64Dmb6PS1Rr4WT3XRF2imE')
-playlist.load()
+    playlist = session.get_playlist('spotify:user:1154159617:playlist:64Dmb6PS1Rr4WT3XRF2imE')
+    playlist.load()
 
-# Pick track
-track_number = random.randint(0, (len(playlist.tracks)-1))
+    # Pick track
+    track_number = random.randint(0, (len(playlist.tracks)-1))
 
-track = playlist.tracks[track_number]
-track.load()
-print(str(track_number) + ": " + track.name)
+    track = playlist.tracks[track_number]
+    track.load()
+    print(str(track_number) + ": " + track.name)
 
-session.player.load(track)
-session.player.play()
+    session.player.load(track)
+    session.player.play()
 
-try:
-    while not end_of_track.wait(0.1):
+    try:
+        while not end_of_track.wait(0.1):
+            pass
+    except KeyboardInterrupt:
         pass
-except KeyboardInterrupt:
-    pass

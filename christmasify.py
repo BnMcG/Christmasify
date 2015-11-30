@@ -5,8 +5,9 @@ import threading
 from datetime import datetime
 import os
 
+__location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+
 def get_login_details():
-    __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
     file = open(os.path.join(__location__, '.authentication'), 'r')
     csv = file.read()
     details = csv.split(',')
@@ -32,6 +33,9 @@ def on_end_of_track(self):
 time = int(datetime.now().strftime('%H%M%S'))
 
 if (time < 230500) and (time > 93000):
+    config = spotify.Config()
+    config.load_application_key_file(os.path.join(__location__, 'spotify_appkey.key'))
+
     session = spotify.Session()
     loop = spotify.EventLoop(session)
     loop.start()

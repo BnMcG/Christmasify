@@ -17,6 +17,10 @@ print(login[0])
 print(login[1])
 
 session = spotify.Session()
+audio = spotify.AlsaSink(session)
+loop = spotify.EventLoop(session)
+loop.start()
+
 session.login(login[0], login[1])
 
 # Do nothing until logged in
@@ -26,14 +30,9 @@ while session.connection.state != spotify.ConnectionState.LOGGED_IN:
 playlist = session.get_playlist('spotify:user:1154159617:playlist:64Dmb6PS1Rr4WT3XRF2imE')
 playlist.load()
 
-loop = spotify.EventLoop(session)
-loop.start()
-
 # Pick track
 track_number = random.randint(0, (len(playlist.tracks)-1))
 print(track_number)
-
-audio = spotify.AlsaSink(session)
 
 track = playlist.tracks[track_number]
 track.load()
